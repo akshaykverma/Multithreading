@@ -4,7 +4,6 @@ public class ThreadCreationMethod2 {
 
 	public static void main(String args[]) throws InterruptedException {
 		
-		
 		NewThread thread = new NewThread();
 		thread.setName("New Worker Thread");
 		thread.start();

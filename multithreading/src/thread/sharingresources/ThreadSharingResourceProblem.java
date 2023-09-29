@@ -4,18 +4,23 @@ public class ThreadSharingResourceProblem {
 
 	public static void main(String args[]) throws InterruptedException {
 		InventoryCounter inventoryCounter = new InventoryCounter();
+		
 		IncrementingThread incrementingThread = new IncrementingThread(inventoryCounter);
 		DecrementingThread decrementingThread = new DecrementingThread(inventoryCounter);
 
 		incrementingThread.start();
 		decrementingThread.start();
 
+		// making the main thread to wait until the increment and decrement threads are completed
 		incrementingThread.join();
 		decrementingThread.join();
 
 		System.out.println("We currently have " + inventoryCounter.getItems() + " items");
 	}
 
+	/**
+	 * Thread to decrement the shared resource
+	 */
 	public static class DecrementingThread extends Thread {
 
 		private InventoryCounter inventoryCounter;
@@ -32,6 +37,9 @@ public class ThreadSharingResourceProblem {
 		}
 	}
 
+	/**
+	 * Thread to increment the shared resource
+	 */
 	public static class IncrementingThread extends Thread {
 
 		private InventoryCounter inventoryCounter;

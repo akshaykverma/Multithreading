@@ -12,10 +12,12 @@ public class HackerPoliceUseCase {
 		
 		Random random = new Random(); 
 		
+		// random vault password
 		int password = random.nextInt(MAX_PASSWORD_LIMIT);
 		System.out.println("Password : " + password);
 		
 		Vault vault = new Vault(password); 
+		
 		Thread policeThread = new PoliceThread();
 		policeThread.setName(policeThread.getClass().getName());
 		
@@ -29,6 +31,10 @@ public class HackerPoliceUseCase {
 		}
 	}
 	
+	/**
+	 * Vault Creation which the hackers are tying to break.
+	 *
+	 */
 	private static class Vault {
 		private int password;
 
@@ -41,6 +47,11 @@ public class HackerPoliceUseCase {
 		}
 	}
 
+	/**
+	 * Abstract method that has the access to the vault 
+	 * and provides abstract method run for the hackers to implement 
+	 * where they write their logic to break the vault by guessing the password
+	 */
 	private static abstract class HackerThread extends Thread {
 		protected Vault vault;
 		
@@ -60,6 +71,10 @@ public class HackerPoliceUseCase {
 		}
 	}
 	
+	/**
+	 * This hacker implements run by guessing the password in ascending order
+	 * 
+	 */
 	private static class AscendingHackerThread extends HackerThread {
 
 		public AscendingHackerThread(Vault vault) {
@@ -84,6 +99,9 @@ public class HackerPoliceUseCase {
 		}
 	}
 	
+	/**
+	 * This hacker implements run() by guessing the password in descending order.
+	 */
 	private static class DescendingHackerThread extends HackerThread {
 
 		public DescendingHackerThread(Vault vault) {
@@ -108,6 +126,9 @@ public class HackerPoliceUseCase {
 		}
 	}
 	
+	/**
+	 * Police thread running at a delay of 1s and if it completes the hackers are caught
+	 */
 	private static class PoliceThread extends Thread {
 		
 		@Override
