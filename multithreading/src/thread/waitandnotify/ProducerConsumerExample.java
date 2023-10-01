@@ -1,18 +1,21 @@
 package thread.waitandnotify;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Random;
 
 public class ProducerConsumerExample {
 
 	public static void main(String args[]) throws InterruptedException {
-		Processor processor = new Processor();
+		
+		Processor processor = new Processor(5);
 		
 		Thread producerThread = new Thread(() -> {
 			try {
+				
 				processor.producer();
+				
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
@@ -20,8 +23,8 @@ public class ProducerConsumerExample {
 		Thread consumerThread = new Thread(() -> {
 			try {
 				processor.consumer();
+				
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
@@ -29,53 +32,68 @@ public class ProducerConsumerExample {
 		producerThread.start();
 		consumerThread.start();
 		
-		producerThread.join();
-		consumerThread.join();
 	}
 	
 	
 	public static class Processor {
 		
-		private List<Integer> list = new ArrayList<>();
-		private static final int LIMIT = 5;
-		private Object lock = new Object();
+		private Queue<Integer> queue;
+		private int limit;
+		private final Object lock;
 		
+		public Processor(int limit) {
+			super();
+			queue = new LinkedList<>();
+			this.limit = limit;
+			this.lock = new Object();
+		}
+		
+		/**
+		 * Produce Method
+		 * @throws InterruptedException
+		 */
 		public void producer() throws InterruptedException {
 			
-			synchronized (lock) {
-				int item;
-				while(true) {
-					
-					if(list.size() == LIMIT) {
-						System.out.println("Producer waiting....");
+			Random random = new Random();
+
+			while(true) {
+				int item = random.nextInt(1000);
+				synchronized (lock) {
+					if(queue.size() == limit) {
+						System.out.println("Producer waiting due to limit of " + this.limit + " ....");
 						lock.wait();
 					} else {
-						item = 1 + list.size();
-						list.add(item);
+						queue.add(item);
 						System.out.println("Produced Item : " + item);
 						lock.notify();
 					}
-					Thread.sleep(500);
-				}
+				} // lock is released here
+				
+				// faster production
+				Thread.sleep(500);
 			}
 			
 		}
 		
+		/**
+		 * Consume method
+		 * @throws InterruptedException
+		 */
 		public void consumer() throws InterruptedException {
 
-			synchronized (lock) {
-				while (true) {
-
-					if (list.size() == 0) {
+			while (true) {
+				synchronized (lock) {
+					if (queue.size() == 0) {
 						System.out.println("Consumer waiting....");
 						lock.wait();
 					} else {
-						System.out.println("Consumed Item : " + list.remove(0));
+						System.out.println("Consumed Item : " + queue.poll());
 						lock.notify();
 					}
-					Thread.sleep(500);
-				}
+				} // lock is release here 
 				
+				// slower production
+				Thread.sleep(1000);				
 			}
 		}
 	}

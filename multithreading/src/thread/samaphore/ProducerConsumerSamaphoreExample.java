@@ -16,44 +16,62 @@ public class ProducerConsumerSamaphoreExample {
 		Random items = new Random();
 		Inventory inventory = new Inventory(CAPACITY);
 		
+		// producer threads
 		List<Thread> producerThreads = new ArrayList<>();
 		producerThreads.add(new Producer(inventory, items));
-//		producerThreads.add(new Producer(inventory, items));
-//		producerThreads.add(new Producer(inventory, items));
-//		producerThreads.add(new Producer(inventory, items));
-//		producerThreads.add(new Producer(inventory, items));
-//		
+		producerThreads.add(new Producer(inventory, items));
+		producerThreads.add(new Producer(inventory, items));
+		producerThreads.add(new Producer(inventory, items));
+		producerThreads.add(new Producer(inventory, items));
+		
+		// consumer threads
 		List<Thread> consumerThreads = new ArrayList<>();
-		consumerThreads.add(new Consumer(inventory, items));
-		consumerThreads.add(new Consumer(inventory, items));
-		consumerThreads.add(new Consumer(inventory, items));
-
+		consumerThreads.add(new Consumer(inventory));
+		consumerThreads.add(new Consumer(inventory));
+		consumerThreads.add(new Consumer(inventory));
+		
+		// starting producer threads
 		for (Thread thread : producerThreads) {
 			thread.start();
 		}
-
+		
+		// starting consumer threads
 		for (Thread thread : consumerThreads) {
 			thread.start();
 		}
 		
-		
 	}
 	
+	/**
+	 * Inventory contains the queue, lock, capacity, empty and full semaphores
+	 */
 	private static class Inventory {
 		private Queue<Integer> queue;
 		private int capacity;
+		
+		// used for the critical section (queue)
 		private ReentrantLock lock;
+		
+		// handles the producers 
 		private Semaphore empty;
+		
+		// handles the consumers
 		private Semaphore full;
 		
 		public Inventory(int capacity) {
 			this.capacity = capacity;
 			queue = new LinkedList<Integer>();
 			lock = new ReentrantLock();
-			empty = new Semaphore(1);
+			empty = new Semaphore(capacity);
+			
+			// set to 0 so that the consumer does not start before producer
 			full = new Semaphore(0);
 		}
 		
+		/**
+		 * Produce Item and add to the queue
+		 * @param item
+		 */
 		public void produceItem(int item) {
 			try {
 				empty.acquire();
@@ -73,6 +91,9 @@ public class ProducerConsumerSamaphoreExample {
 			}	
 		}
 		
+		/**
+		 * consume the items from the queue
+		 */
 		public void consumeItem() {
 			try {
 				full.acquire();
@@ -94,7 +115,9 @@ public class ProducerConsumerSamaphoreExample {
 		}
 	}
 	
-	
+	/**
+	 * Producer Thread
+	 */
 	private static class Producer extends Thread {
 		private Inventory inventory;
 		private Random items;
@@ -110,17 +133,16 @@ public class ProducerConsumerSamaphoreExample {
 				inventory.produceItem(items.nextInt(1000));
 			}
 		}
-		
 	}
 	
-
+	/**
+	 * Consumer Thread
+	 */
 	private static class Consumer extends Thread {
 		private Inventory inventory;
-		private Random items;
 		
-		Consumer(Inventory inventory, Random items) {
+		Consumer(Inventory inventory) {
 			this.inventory = inventory;
-			this.items = items;
 		}
 		
 		@Override

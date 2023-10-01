@@ -13,6 +13,6 @@ execution-interface-salesforce-backend/src/main/java/META-INF/MANIFEST.MF
 
 # Ignore .class files in specific directories (adjust as needed)
 target/*.class
-bin/*.class
+bin/**
 out/*.class
 

@@ -9,10 +9,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-/**
- * Reentrant Read Write Lock & Database Implementation
- * https://www.udemy.com/java-multithreading-concurrency-performance-optimization
- */
 public class ReentrantReadWriteLockExample {
     public static final int HIGHEST_PRICE = 1000;
 

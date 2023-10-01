@@ -11,7 +11,7 @@ import java.util.concurrent.locks.LockSupport;
  * Atomic References, Compare And Set, Lock-Free High Performance Data Structure
  * https://www.udemy.com/java-multithreading-concurrency-performance-optimization
  */
-public class AtomicReferenceExample {
+public class AtomicReferenceExample2 {
 	
     public static void main(String[] args) throws InterruptedException {
         //StandardStack<Integer> stack = new StandardStack<>();

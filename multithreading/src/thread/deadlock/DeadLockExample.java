@@ -2,10 +2,6 @@ package thread.deadlock;
 
 import java.util.Random;
 
-/**
- * Locking Strategies & Deadlocks
- * https://www.udemy.com/java-multithreading-concurrency-performance-optimization
- */
 public class DeadLockExample {
 	
     public static void main(String[] args) {
@@ -17,6 +13,9 @@ public class DeadLockExample {
         trainBThread.start();
     }
 
+    /**
+     * Train B thread
+     */
     public static class TrainB implements Runnable {
         private Intersection intersection;
         private Random random = new Random();
@@ -39,6 +38,9 @@ public class DeadLockExample {
         }
     }
 
+    /**
+     * Train A Thread
+     */
     public static class TrainA implements Runnable {
         private Intersection intersection;
         private Random random = new Random();
@@ -61,10 +63,20 @@ public class DeadLockExample {
         }
     }
 
+    /**
+     * A simulation of a Intersection of two rail road
+     */
     public static class Intersection {
-        private Object roadA = new Object();
-        private Object roadB = new Object();
-
+        
+    	// lock to acquire road A 
+    	private Object roadA = new Object();
+        
+    	// lock to acquire road B
+    	private Object roadB = new Object();
+    	
+    	/**
+    	 * Train is trying to run on road A
+    	 */
         public void takeRoadA() {
             synchronized (roadA) {
                 System.out.println("Road A is locked by thread " + Thread.currentThread().getName());
@@ -79,7 +91,10 @@ public class DeadLockExample {
             }
         }
 
-        public void takeRoadB() {
+       	/**
+    	 * Train is trying to run on road B
+    	 */
+         public void takeRoadB() {
             synchronized (roadB) {
                 System.out.println("Road B is locked by thread " + Thread.currentThread().getName());
 

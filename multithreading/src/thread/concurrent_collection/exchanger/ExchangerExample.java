@@ -69,7 +69,7 @@ class SecondWorker implements Runnable {
 	}
 }
 
-class App {
+class ExchangerExample {
 
 	public static void main(String[] args) {
 
