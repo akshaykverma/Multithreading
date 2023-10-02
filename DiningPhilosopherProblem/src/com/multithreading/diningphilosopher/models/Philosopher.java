@@ -29,7 +29,7 @@ public class Philosopher {
 	}
 	
 	/**
-	 * The Philosopher is eating
+	 * The Philosopher is eating by picking the left and right chop sticks 
 	 * @throws InterruptedException 
 	 */
 	public void eat() throws InterruptedException {

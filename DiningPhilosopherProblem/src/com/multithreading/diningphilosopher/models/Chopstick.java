@@ -9,6 +9,10 @@ import com.multithreading.diningphilosopher.enums.ChopstickState;
 public class Chopstick {
 	
 	private int id;
+	
+	/**
+	 *  lock to be used while picking and puting down the chop sticks
+	 */
 	private Lock lock;
 	
 	public Chopstick(int id) {
@@ -17,8 +21,7 @@ public class Chopstick {
 	}
 	
 	/**
-	 * Trying to pick the chopstick using the tryLock with a waiting time of 10ms (Acquires the lock if it is free within the given waiting time)
-	 * @param philosopher
+	 * Trying to pick the chop stick using the tryLock with a waiting time of 10ms (Acquires the lock if it is free within the given waiting time)
 	 * @param state
 	 * @return
 	 * @throws InterruptedException
@@ -32,8 +35,7 @@ public class Chopstick {
 	}
 	
 	/**
-	 * Putting down the chopstick by releasing the lock
-	 * @param philosopher
+	 * Putting down the chop stick by releasing the lock
 	 */
 	public void putDown() {
 		lock.unlock();
