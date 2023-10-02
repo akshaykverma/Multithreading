@@ -6,12 +6,19 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import com.multithreading.diningphilosopher.enums.ChopstickState;
 
+/**
+ * Represents the chop stick to be used by the philosophers
+ *
+ */
 public class Chopstick {
 	
+	/**
+	 * Unique id for a chop stick
+	 */
 	private int id;
 	
 	/**
-	 *  lock to be used while picking and puting down the chop sticks
+	 *  lock to be used while picking and putting down the chop sticks
 	 */
 	private Lock lock;
 	

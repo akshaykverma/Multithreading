@@ -4,12 +4,21 @@ import java.util.Random;
 
 import com.multithreading.diningphilosopher.enums.ChopstickState;
 
+/**
+ * 
+ * Representation of a Philosopher
+ *
+ */
 public class Philosopher {
 
 	private int id;
 	private int eatCount;
 	private Chopstick leftChopstick;
 	private Chopstick rightChopstick;
+	
+	/**
+	 * Used for setting a random time to sleep while thinking and eating
+	 */
 	private Random randomSleep;
 
 	public Philosopher(int id, Chopstick leftChopstick, Chopstick rightChopstick) {
@@ -45,19 +54,19 @@ public class Philosopher {
 				System.out.println(this + " is eating...");
 				
 				// increasing the counter. 
-				// This is a atomic operation as its inside the chopstick lock
+				// This is a atomic operation as its inside the chop stick lock
 				eatCount++;
 				Thread.sleep(randomSleep.nextInt(500));
+
+				// release the lock on right chop stick
+				rightChopstick.putDown();
+				System.out.println(this + " has put down the " + rightChopstick);
 			}
 			
-			// release the lock on right chop stick
-			rightChopstick.putDown();
-			System.out.println(this + " has put down the " + rightChopstick);
+			// release the lock on left chop stick
+			leftChopstick.putDown();
+			System.out.println(this + " has put down the " + leftChopstick);
 		}
-		
-		// release the lock on left chop stick
-		leftChopstick.putDown();
-		System.out.println(this + " has put down the " + leftChopstick);
 	}
 
 	public int getEatCount() {
