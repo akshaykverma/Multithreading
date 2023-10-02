@@ -12,7 +12,7 @@ public class Philosopher {
 	private Chopstick rightChopstick;
 	private Random randomSleep;
 
-	public Philosopher(int id, int eatCount, Chopstick leftChopstick, Chopstick rightChopstick) {
+	public Philosopher(int id, Chopstick leftChopstick, Chopstick rightChopstick) {
 		this.id = id;
 		this.leftChopstick = leftChopstick;
 		this.rightChopstick = rightChopstick;
