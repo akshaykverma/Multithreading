@@ -1,0 +1,9 @@
+
+# Ignore compiled class files
+*.class
+
+# Ignore .class files in specific directories (adjust as needed)
+target/*.class
+bin/**
+out/*.class
+
