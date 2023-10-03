@@ -1,4 +1,13 @@
-
+.project
+.classpath
+.factorypath
+.idea/
+.settings/
+target/
+gwt-unitCache/
+logs/
+.iml
+execution-interface-salesforce-backend/src/main/java/META-INF/MANIFEST.MF
 # Ignore compiled class files
 *.class
 
